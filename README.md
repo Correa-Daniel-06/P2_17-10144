@@ -8,6 +8,6 @@
 
 -- Uso
 1. Clona este repositorio:
-   bash : git clone https://github.com/tu_usuario/meraki-automation.git
+   bash : git clone https:(https://github.com/Correa-Daniel-06/P2_17-10144)
 2. Instalar dependencias (requests) con: pip install requests
 3. Ejecutar el script: python3 main.py
