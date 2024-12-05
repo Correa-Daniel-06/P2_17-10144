@@ -7,8 +7,7 @@
 	- Clave de API válida.
 
 -- Uso
-1. Clona este repositorio:
-   bash : git clone https:(https://github.com/Correa-Daniel-06/P2_17-10144)
+1. Clona este repositorio
 2. Instalar dependencias (requests) con: pip install requests
 3. Ejecutar el script: python3 main.py
 
