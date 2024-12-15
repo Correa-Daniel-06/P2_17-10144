@@ -1,7 +1,8 @@
-# librerias a utilizar
+# Librerías a utilizar
 import requests
 import json
 import csv
+import time
 
 # Clave de la API y URL base
 API_KEY = "75dd5334bef4d2bc96f26138c163c0a3fa0b5ca6"
@@ -41,7 +42,7 @@ def get_inventory(org_id):
             "status": device.get("status"),
         }
         for device in devices
-        if device.get("model") and ("wireless" in device.get("productType").lower() or "appliance" in device.get("productType").lower())
+        if device.get("model") and ("wireless" in device.get("productType", "").lower() or "appliance" in device.get("productType", "").lower())
     ]
 
     # Imprimir dispositivos filtrados
@@ -63,19 +64,29 @@ def export_to_csv(devices, filename="inventario.csv"):
 
 # Script principal
 if __name__ == "__main__":
-    # Paso 1: Obtener organizaciones
-    organizations = get_organizations()
-    print("Organizaciones disponibles:")
-    print(json.dumps(organizations, indent=4))
+    while True:
+        try:
+            # Paso 1: Obtener organizaciones
+            organizations = get_organizations()
+            print("Organizaciones disponibles:")
+            print(json.dumps(organizations, indent=4))
 
-    # Paso 2: Generar inventario para cada organización
-    all_devices = []
-    for org in organizations:
-        org_id = org["id"]
-        org_name = org["name"]
-        print(f"Obteniendo dispositivos para la organización: {org_name} (ID: {org_id})")
-        devices = get_inventory(org_id)
-        all_devices.extend(devices)  # Acumular dispositivos de todas las organizaciones
+            # Paso 2: Generar inventario para cada organización
+            all_devices = []
+            for org in organizations:
+                org_id = org["id"]
+                org_name = org["name"]
+                print(f"Obteniendo dispositivos para la organización: {org_name} (ID: {org_id})")
+                devices = get_inventory(org_id)
+                all_devices.extend(devices)  # Acumular dispositivos de todas las organizaciones
 
-    # Paso 3: Exportar los dispositivos a un archivo CSV
-    export_to_csv(all_devices)
+            # Paso 3: Exportar los dispositivos a un archivo CSV
+            export_to_csv(all_devices)
+
+            # Mensaje de éxito
+            print("Inventario actualizado. Esperando 5 minutos para la próxima ejecución...")
+        except Exception as e:
+            print(f"Error: {e}")
+
+        # Esperar 5 minutos antes de la próxima iteración
+        time.sleep(300)
