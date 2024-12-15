@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  inventario:
+    image: inventario-meraki  # Nombre de la imagen que creaste
+    container_name: inventario-container-V3  # Nombre del contenedor
+    volumes:
+      - inventario_data:/app/data  # Monta el volumen para persistencia de datos
+    restart: always  # Asegura que el contenedor se reinicie si se detiene
+    environment:
+      - PYTHONUNBUFFERED=1  # Evita que el buffer de salida de Python se almacene, lo que permite ver la salida en tiempo real
+    command: python3 /app/inventario.py  # Ejecuta el script de Python al iniciar el contenedor
+
+volumes:
+  inventario_data:  # Definimos un volumen para almacenar los datos persistentes
